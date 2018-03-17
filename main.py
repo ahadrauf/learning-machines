@@ -10,7 +10,7 @@ import autocropper
 import textDetection
 import textRecognition
 import subImageLocator
-import formatDate
+import formatText
  
 # construct the argument parser and parse the arguments
 # ex: py -2 main.py -i 'Covidien Taperguard Evac Oral Tracheal Tube.jpg'
@@ -20,14 +20,21 @@ ap.add_argument("-i", "--image", required = True,
 args = vars(ap.parse_args())
 
 cropped, filteredCrop = autocropper.autocrop(args["image"])
-contours = textDetection.detectText(filteredCrop, 6)
+contours = textDetection.detectText(filteredCrop.copy(), 6, True)
+#print(len(contours))
+#contours = textDetection.detectText(filteredCrop.copy(), 5, True)
+#print(len(contours))
+
+#import sys
+#sys.exit(0)
 #textRecognition.readText(filteredCrop, contours)
 
 hourglassCrop, filteredHourglassCrop = autocropper.autocrop('hourglass.jpg', height=100)
 output = subImageLocator.findSubImage(filteredCrop, contours, filteredHourglassCrop)
 
-possibleDates = textRecognition.contourBasedTextRecognition(filteredCrop, output)
-for d in possibleDates:
-    formattedDate = formatDate.formatDate(d)
-    if formattedDate:
-        print(formattedDate)
+possibleDates, possibleLots = textRecognition.contourBasedTextRecognition(filteredCrop, output)
+for d, l in zip(possibleDates, possibleLots):
+    d = formatText.formatDate(d)
+    l = formatText.formatLot(l)
+    if d or l:
+        print(d + ', ' + l)

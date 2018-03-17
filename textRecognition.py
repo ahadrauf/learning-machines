@@ -7,7 +7,7 @@ import imutils
 
 import sys
 import textDetection
-import formatDate
+import formatText
 
 def readText(image, contours):
     for contour in contours:
@@ -24,16 +24,30 @@ def readText(image, contours):
     
     
 def contourBasedTextRecognition(image, contours, dilationIterations = 1):
-    ret = []
+    dates = []
+    lots = []
     for contour in contours:
         [x, y, w, h] = contour[0]
         temp_image = image[int(y+h/2):y+h, int(x+w/2.4):x+w]
-        c = textDetection.detectText(temp_image, dilationIterations)
+        #temp_image = image[y:y+h, x:x+w]
+        #if len(contours) > 1:
+        #    c = textDetection.detectText(temp_image.copy(), dilationIterations)
         cv2.imwrite('temp_image.jpg', temp_image)
         image_text = image_to_string(Image.open('temp_image.jpg')).strip()
-        if len(image_text) > 0:
-            ret.append(image_text)
+        #if len(image_text) > 0:
+        dates.append(image_text)
+        
+        temp_image = image[y:int(y+h/2), x:x+w]
+        #temp_image = image[y:y+h, x:x+w]
+        #if len(contours) > 1:
+        #    c = textDetection.detectText(temp_image.copy(), dilationIterations)
+        cv2.imwrite('temp_image.jpg', temp_image)
+        image_text = image_to_string(Image.open('temp_image.jpg')).strip()
+        #if len(image_text) > 0:
+        lots.append(image_text)
+        #cv2.imshow('temp', temp_image)
+        #cv2.waitKey()
         #print(image_text)
         #sys.stdout.flush()
     os.remove('temp_image.jpg')
-    return ret
+    return (dates, lots)
