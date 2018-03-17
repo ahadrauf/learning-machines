@@ -3,7 +3,8 @@ import imutils
 import numpy as np
 from matplotlib import pyplot as plt 
 
-def captch_ex(file_name, width=1200):
+#Adapted from this StackOverflow post: https://stackoverflow.com/questions/24385714/detect-text-region-in-image-using-opencv
+def autocrop(file_name, width=1200):
     img = cv2.imread(file_name)
     img = cv2.GaussianBlur(img, (5,5), 0)
     img = imutils.resize(img, width=width)
@@ -41,4 +42,4 @@ file_name = 'Closurefast Introducer Sheath Set.jpg'
 file_name = 'sample_image1.jpg'
 file_name = 'Monocryl suture - Violet Monofilament.jpg'
 file_name = 'BD Spinal Needle.jpg'
-captch_ex(file_name)
+autocrop(file_name)
