@@ -19,7 +19,8 @@ ap.add_argument("-i", "--image", required = True,
 	help = "Path to the image to be scanned")
 args = vars(ap.parse_args())
 
-cropped, filteredCrop = autocropper.autocrop(args["image"])
+image = cv2.imread(args["image"])
+cropped, filteredCrop = autocropper.autocrop(image)
 contours = textDetection.detectText(filteredCrop.copy(), 6, False)
 #print(len(contours))
 #contours = textDetection.detectText(filteredCrop.copy(), 5, True)
@@ -29,7 +30,8 @@ contours = textDetection.detectText(filteredCrop.copy(), 6, False)
 #sys.exit(0)
 #textRecognition.readText(filteredCrop, contours)
 
-hourglassCrop, filteredHourglassCrop = autocropper.autocrop('hourglass.jpg', height=100)
+hourglass = cv2.imread('hourglass.jpg')
+hourglassCrop, filteredHourglassCrop = autocropper.autocrop(hourglass, height=100)
 output = subImageLocator.findSubImage(filteredCrop, contours, filteredHourglassCrop)
 
 possibleDates, possibleLots = textRecognition.contourBasedTextRecognition(filteredCrop, output)

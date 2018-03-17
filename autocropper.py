@@ -4,15 +4,15 @@ import numpy as np
 from matplotlib import pyplot as plt 
 
 #Adapted from this StackOverflow post: https://stackoverflow.com/questions/24385714/detect-text-region-in-image-using-opencv
-def autocrop(file_name, width=1200, height=1000):
-    img = cv2.imread(file_name)
+def autocrop(image, width=1200, height=1000):
+    img = image.copy()
     img = cv2.GaussianBlur(img, (5,5), 0)
     if img.shape[0] < img.shape[1]:
         img = imutils.resize(img, width=width)
     else:
         img = imutils.resize(img, height=height)
 
-    img_final = cv2.imread(file_name)
+    img_final = image.copy()
     if img_final.shape[0] < img_final.shape[1]:
         img_final = imutils.resize(img_final, width=width)
     else:
