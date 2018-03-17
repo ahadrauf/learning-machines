@@ -26,7 +26,7 @@ contours = textDetection.detectText(filteredCrop, 6)
 hourglassCrop, filteredHourglassCrop = autocropper.autocrop('hourglass.jpg', height=100)
 output = subImageLocator.findSubImage(filteredCrop, contours, filteredHourglassCrop)
 
-possibleDates = textRecognition.temp(filteredCrop, output)
+possibleDates = textRecognition.contourBasedTextRecognition(filteredCrop, output)
 for d in possibleDates:
     formattedDate = formatDate.formatDate(d)
     if formattedDate:

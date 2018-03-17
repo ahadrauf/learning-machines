@@ -23,7 +23,7 @@ def readText(image, contours):
     os.remove('temp_image.jpg')
     
     
-def temp(image, contours, dilationIterations = 1):
+def contourBasedTextRecognition(image, contours, dilationIterations = 1):
     ret = []
     for contour in contours:
         [x, y, w, h] = contour[0]
@@ -31,10 +31,9 @@ def temp(image, contours, dilationIterations = 1):
         c = textDetection.detectText(temp_image, dilationIterations)
         cv2.imwrite('temp_image.jpg', temp_image)
         image_text = image_to_string(Image.open('temp_image.jpg')).strip()
-        #print(image_text)
         if len(image_text) > 0:
             ret.append(image_text)
-        #print(formatDate.formatDate(image_text))
-        sys.stdout.flush()
+        #print(image_text)
+        #sys.stdout.flush()
     os.remove('temp_image.jpg')
     return ret
