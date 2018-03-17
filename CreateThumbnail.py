@@ -1,5 +1,5 @@
 from __future__ import print_function
-import boto3
+#import boto3
 import os
 import sys
 import uuid
@@ -13,7 +13,7 @@ import cv2
 import imutils
 from pytesser import *
      
-s3_client = boto3.client('s3')
+#s3_client = boto3.client('s3')
      
 #def resize_image(image_path, resized_path):
 #    with Image.open(image_path) as image:
@@ -33,3 +33,19 @@ def handler(event, context):
         #s3_client.download_file(bucket, key, download_path)
         #resize_image(download_path, upload_path)        
         s3_client.upload_file(upload_path, '{}parsed'.format(bucket), key)
+        
+def handlerLocalTest(download_path, upload_path):
+    #bucket = record['s3']['bucket']['name']
+    #key = record['s3']['object']['key'] 
+    #download_path = '/tmp/{}{}'.format(uuid.uuid4(), key)
+    #upload_path = '/tmp/parsed-{}'.format(key)
+    #s3_client.download_file(bucket, key, download_path)
+    date, log = main.main(download_path)
+    f = open(upload_path,"w+")
+    f.write(date + "\n" + log)
+    #s3_client.download_file(bucket, key, download_path)
+    #resize_image(download_path, upload_path)        
+    #s3_client.upload_file(upload_path, '{}parsed'.format(bucket), key)
+    
+if __name__ == '__main__':
+    handlerLocalTest('Webp.net-resizeimage.jpg', 'output.txt')
