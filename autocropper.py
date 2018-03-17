@@ -4,13 +4,19 @@ import numpy as np
 from matplotlib import pyplot as plt 
 
 #Adapted from this StackOverflow post: https://stackoverflow.com/questions/24385714/detect-text-region-in-image-using-opencv
-def autocrop(file_name, width=1200):
+def autocrop(file_name, width=1200, height=1000):
     img = cv2.imread(file_name)
     img = cv2.GaussianBlur(img, (5,5), 0)
-    img = imutils.resize(img, width=width)
+    if img.shape[0] < img.shape[1]:
+        img = imutils.resize(img, width=width)
+    else:
+        img = imutils.resize(img, height=height)
 
     img_final = cv2.imread(file_name)
-    img_final = imutils.resize(img_final, width=width)
+    if img_final.shape[0] < img_final.shape[1]:
+        img_final = imutils.resize(img_final, width=width)
+    else:
+        img_final = imutils.resize(img_final, height=height)
     img2gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, mask = cv2.threshold(img2gray, 180, 255, cv2.THRESH_TRUNC)
     image_final = cv2.bitwise_and(img2gray, img2gray, mask=mask)
@@ -28,11 +34,15 @@ def autocrop(file_name, width=1200):
     alteredCrop = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
     filteredCrop = cv2.adaptiveThreshold(alteredCrop,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,13,6)
     filteredCrop = cv2.GaussianBlur(filteredCrop, (1, 1), 0)
+    
+    #Uncomment the lines below to visualize the images for debugging purposes
+    '''
     if alteredCrop.shape[0] < alteredCrop.shape[1]:
         plot_image = np.concatenate((alteredCrop, filteredCrop), axis=0)
     else:
         plot_image = np.concatenate((alteredCrop, filteredCrop), axis=1)
     plt.imshow(plot_image, 'gray')
     plt.show()
+    '''
     
     return (cropped, filteredCrop)
