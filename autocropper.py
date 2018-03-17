@@ -34,12 +34,5 @@ def autocrop(file_name, width=1200):
         plot_image = np.concatenate((alteredCrop, filteredCrop), axis=1)
     plt.imshow(plot_image, 'gray')
     plt.show()
-	
+    
     return (cropped, filteredCrop)
-
-file_name = 'Covidien Taperguard Evac Oral Tracheal Tube.jpg'
-file_name = 'Closurefast Introducer Sheath Set.jpg'
-file_name = 'sample_image1.jpg'
-file_name = 'Monocryl suture - Violet Monofilament.jpg'
-file_name = 'BD Spinal Needle.jpg'
-autocrop(file_name)
