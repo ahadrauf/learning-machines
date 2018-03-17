@@ -29,7 +29,7 @@ def formatDate(date):
         else:
             return new_date[2:6] + '-' + new_date[0:2]
     else:
-        return new_date
+        return ""
         
 def formatLot(lot):
     lot = lot.replace(')(', 'X')

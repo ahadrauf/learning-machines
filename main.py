@@ -20,7 +20,7 @@ ap.add_argument("-i", "--image", required = True,
 args = vars(ap.parse_args())
 
 cropped, filteredCrop = autocropper.autocrop(args["image"])
-contours = textDetection.detectText(filteredCrop.copy(), 6, True)
+contours = textDetection.detectText(filteredCrop.copy(), 6, False)
 #print(len(contours))
 #contours = textDetection.detectText(filteredCrop.copy(), 5, True)
 #print(len(contours))
@@ -36,5 +36,11 @@ possibleDates, possibleLots = textRecognition.contourBasedTextRecognition(filter
 for d, l in zip(possibleDates, possibleLots):
     d = formatText.formatDate(d)
     l = formatText.formatLot(l)
-    if d or l:
-        print(d + ', ' + l)
+    #if d or l:
+    #    print(d + ', ' + l)
+    if d:
+        date = d
+    if l:
+        lot = l
+
+print(date, lot)
