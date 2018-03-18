@@ -47,7 +47,7 @@ def detectText(image, dilationIterations = 3, displayImages = False):
     # for each contour found, draw a rectangle around it on original image
     for contour in ret:
         # get rectangle bounding contour
-        [x,y,w,h] = cv2.boundingRect(contour)
+        [x,y,w,h] = contour
 		
 		# draw rectangle around contour on original image
         cv2.rectangle(image,(x,y),(x+w,y+h),(0,0,0),2)

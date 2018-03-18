@@ -35,3 +35,18 @@ connect the code to an Amazon S3 instance.
 1. If you want to use `main.py` directly, call the following command: `py -2 main.py -i 'image_file_path'`
 2. If you want to use the `CreateThumbnail.py`, edit the image file path you pass in to `handlerLocalTest()` in the 
 `if __name__ == '__main__':` method. Then you can call it with the following command: `py -2 CreateThumbnail.py`
+
+# Example Run:
+For example, with the file `/examples/sample_image1.jpg` shown below:
+![Example Image Input](examples/sample_image1.jpg)
+
+The output of step 3 in the methodology above for this image (i.e. all of the active sections in the cropped image) is shown below:
+![Step 3 Output of Example Image Input](display_examples/step3output.png)
+
+And visualizing the output, which shows the final expiration date and lot number, we have the following:
+![Final Output of Example Image Input](display_examples/finaloutput.png)
+And the program outputs to the console screen:
+```
+The item log number is 768145H
+The expiration date is 2020-04-01
+```

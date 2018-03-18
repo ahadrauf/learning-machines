@@ -70,4 +70,4 @@ if __name__ == '__main__':
     ap.add_argument("-i", "--image", required = True,
     	help = "Path to the image to be scanned")
     args = vars(ap.parse_args())
-	return parseImage(args["image"])
+    parseImage(args["image"])
