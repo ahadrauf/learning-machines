@@ -14,6 +14,8 @@ for Windows and [PyImageSearch](https://www.pyimagesearch.com/2016/11/28/macos-i
 [Google's PyTesser code archive](https://code.google.com/archive/p/pytesser/wikis/README.wiki). Note that you'll also need to install
 Pillow in order to process images using PyTesser (you can install Pillow by following their 
 [installation documentation](http://pillow.readthedocs.io/en/3.1.x/installation.html))
+* I also use imutils for miscellaneous resizing and processing tools. imutils is written by PyImageSearch, and you can find
+the documentation and installation steps for it [here](https://github.com/jrosebr1/imutils)
 
 The code runs through the following steps:
 1. Filter the image so it's more readable and at a standardized size
@@ -30,6 +32,6 @@ There are two general ways to run this code. The first is to directly use the `m
 file location, and the second is to use the wrapper `CreateThumbnail.py` file to either automate the `main.py` procedure or to
 connect the code to an Amazon S3 instance.
 
-1. If you want to use `main.py` directly, call the following command: `py -2 main.py image_file_path`
+1. If you want to use `main.py` directly, call the following command: `py -2 main.py -i 'image_file_path'`
 2. If you want to use the `CreateThumbnail.py`, edit the image file path you pass in to `handlerLocalTest()` in the 
 `if __name__ == '__main__':` method. Then you can call it with the following command: `py -2 CreateThumbnail.py`

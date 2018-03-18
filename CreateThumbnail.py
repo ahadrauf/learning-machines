@@ -27,7 +27,7 @@ def handler(event, context):
         download_path = '/tmp/{}{}'.format(uuid.uuid4(), key)
         upload_path = '/tmp/parsed-{}'.format(key)
         s3_client.download_file(bucket, key, download_path)
-        date, log = main.main(download_path)
+        date, log = main.parseImage(download_path)
         f = open(upload_path,"w+")
         f.write(date + "\n" + log)
         #s3_client.download_file(bucket, key, download_path)
@@ -42,7 +42,7 @@ def handlerLocalTest(download_path, upload_path):
     #s3_client.download_file(bucket, key, download_path)
     if os.path.exists(upload_path):
         os.remove(upload_path)
-    date, log = main.main(download_path)
+    date, log = main.parseImage(download_path)
     print('The item log number is', log)
     print('The expiration date is', date)
     sys.stdout.flush()
@@ -53,5 +53,5 @@ def handlerLocalTest(download_path, upload_path):
     #s3_client.upload_file(upload_path, '{}parsed'.format(bucket), key)
     
 if __name__ == '__main__':
-    #handlerLocalTest('Webp.net-resizeimage.jpg', 'output.txt')
-    handlerLocalTest('sample_image1.jpg', 'output.txt')
+    #handlerLocalTest('examples/Webp.net-resizeimage.jpg', 'output.txt')
+    handlerLocalTest('examples/sample_image1.jpg', 'output.txt')

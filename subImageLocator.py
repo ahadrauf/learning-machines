@@ -5,30 +5,18 @@ from imutils.perspective import four_point_transform
 from imutils import contours
 import imutils
 
-#MIN_MATCH_COUNT = 5
-#import sys
-    
+#Adapted from this post: http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_feature_homography/py_feature_homography.html
 def findSubImage(image, contours, subimage):
     validContours = []
     for contour in contours:
         [x, y, w, h] = contour
         temp_image = image[y:y+h, x:x+w]
-        #temp_image = imutils.resize(temp_image, width=50)
-        #print(temp_image.shape, x, y, w, h)
-        #cv2.imshow('temp', temp_image)
-        #cv2.waitKey()
-        #cv2.imwrite('temp_image.jpg', temp_image)
         good = findSubImageHelper(temp_image, subimage)
         if good > 0: # i.e. if there were matches
             validContours.append(([x, y, w, h], good))
-        #sys.stdout.flush()
-    #os.remove('temp_image.jpg')
-    return sorted(validContours, key=lambda c: -c[1])
+    return sorted(validContours, key=lambda c: -c[1]) #sort contours in terms of number of matches, in decreasing order
 
 def findSubImageHelper(image, subimage):    
-    #subimage = cv2.GaussianBlur(subimage, (5, 5), 0)
-    #_, subimage = cv2.subimage(subimage, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-
     if image.shape[1] < 100:
         image = imutils.resize(image, height=100)
     
@@ -57,32 +45,3 @@ def findSubImageHelper(image, subimage):
             good.append(m)
             
     return len(good)
-    '''        
-    if len(good)>MIN_MATCH_COUNT:
-        src_pts = np.float32([ kp1[m.queryIdx].pt for m in good ]).reshape(-1,1,2)
-        dst_pts = np.float32([ kp2[m.trainIdx].pt for m in good ]).reshape(-1,1,2)
-
-        M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC,5.0)
-        matchesMask = mask.ravel().tolist()
-
-        h,w = subimage.shape
-        pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-        dst = cv2.perspectiveTransform(pts,M)
-
-        #image = cv2.polylines(image,[np.int32(dst)],True,0,3, cv2.LINE_AA)
-
-    else:
-        #print "Not enough matches are found - %d/%d" % (len(good),MIN_MATCH_COUNT)
-        matchesMask = None
-    
-    
-    
-    draw_params = dict(matchColor = (0,255,0), # draw matches in green color
-                       singlePointColor = None,
-                       matchesMask = matchesMask, # draw only inliers
-                       flags = 2)
-
-    img3 = cv2.drawMatches(subimage,kp1,image,kp2,good,None,**draw_params)
-    plt.imshow(img3, 'gray'),plt.show()
-    #plt.imshow(image, 'gray'), plt.show()
-    '''
