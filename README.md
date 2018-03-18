@@ -1,4 +1,4 @@
-#ImageTextReader
+# Image Text Reader
 
 This is an optical character recognition platform built specifically for medical equipment. 
 Currently, it's designed to receive an input image of an equipment package (examples are found
@@ -24,3 +24,12 @@ aid detection of important text
 5. Parse through the active sections from step 3 while referring to the tags from step 4 to determine which regions 
 contain the desired information
 6. Parse out the desired information from the text in the desired active section, and output to console
+
+# How to Run Code:
+There are two general ways to run this code. The first is to directly use the `main.py` function by passing in the desired
+file location, and the second is to use the wrapper `CreateThumbnail.py` file to either automate the `main.py` procedure or to
+connect the code to an Amazon S3 instance.
+
+1. If you want to use `main.py` directly, call the following command: `py -2 main.py image_file_path`
+2. If you want to use the `CreateThumbnail.py`, edit the image file path you pass in to `handlerLocalTest()` in the 
+`if __name__ == '__main__':` method. Then you can call it with the following command: `py -2 CreateThumbnail.py`
