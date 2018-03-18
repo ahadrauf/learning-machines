@@ -41,10 +41,10 @@ For example, with the file `/examples/sample_image1.jpg` shown below:
 ![Example Image Input](examples/sample_image1.jpg)
 
 The output of step 3 in the methodology above for this image (i.e. all of the active sections in the cropped image) is shown below:
-![Step 3 Output of Example Image Input](display_examples/step3output.png)
+![Step 3 Output of Example Image Input](display_examples/step3output.PNG)
 
 And visualizing the output, which shows the final expiration date and lot number, we have the following:
-![Final Output of Example Image Input](display_examples/finaloutput.png)
+![Final Output of Example Image Input](display_examples/finaloutput.PNG)
 And the program outputs to the console screen:
 ```
 The item log number is 768145H
