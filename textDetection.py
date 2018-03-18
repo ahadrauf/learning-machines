@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def detectText(image, dilationIterations = 3, displayImages = False):
+def detectText(image, dilationIterations = 3, displayImages = False, MASHpresentation = False):
     #2D filtering algorithm taken from: http://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html
     #2D filtering blurs out noise while keeping important features (the features are also blurred, but they're still visible)
     kernel = np.ones((5,5),np.float32)/25
@@ -13,13 +13,13 @@ def detectText(image, dilationIterations = 3, displayImages = False):
     else:
         gray = processedImage
     _, thresh = cv2.threshold(gray,150,255,cv2.THRESH_BINARY_INV) # threshold
-    if displayImages:
+    if displayImages and not MASHpresentation:
         cv2.imshow('temp', thresh)
         cv2.waitKey()
     
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS,(3,3))    
     dilated = cv2.dilate(thresh,kernel,iterations = dilationIterations) # dilate (the number of iterations is experimental, change if needed)
-    if displayImages:
+    if displayImages and not MASHpresentation:
         cv2.imshow('temp', dilated)
         cv2.waitKey()
     

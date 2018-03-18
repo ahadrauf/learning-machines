@@ -1,18 +1,14 @@
+replacementsDate = {'Z': '2', 'O': '0', '(]': '0',
+                    'JAN': '01', 'FEB': '02', 'MAR': '03',
+                    'APR': '04', 'MAY': '05', 'JUNE': '06',
+                    'JULY': '07', 'AUG': '08', 'SEP': '09',
+                    'OCT': '10', 'NOV': '11', 'DEC': '12',
+                    'JUN': '06', 'JUL': '07'}
+replacementsLot = {')(': 'X', ' ': ''}
+
 def formatDate(date):
-    date = date.replace('Z', '2')
-    date = date.replace('O', '0')
-    date = date.replace("JAN", '01')
-    date = date.replace("FEB", '02')
-    date = date.replace("MAR", '03')
-    date = date.replace("APR", '04')
-    date = date.replace("MAY", '05')
-    date = date.replace("JUNE", '06')
-    date = date.replace("JULY", '07')
-    date = date.replace("AUG", '08')
-    date = date.replace("SEP", '09')
-    date = date.replace("OCT", '10')
-    date = date.replace("NOV", '11')
-    date = date.replace("DEC", '12')
+    for key, value in replacementsDate.items():
+        date = date.replace(key, value)
     new_date = ""
     for c in date:
         if c.isdigit():
@@ -32,12 +28,15 @@ def formatDate(date):
         return ""
         
 def formatLot(lot):
-    lot = lot.replace(')(', 'X')
+    for key, value in replacementsLot.items():
+        lot = lot.replace(key, value)
     if lot.lower().startswith('lot '):
         return lot[4:]
     elif lot.lower().startswith('lot'):
         return lot[3:]
     elif lot.lower().startswith('(10)'):
         return lot[4:]
+    elif len(lot) == 7 and lot.isalnum():
+        return lot
     else:
         return ""

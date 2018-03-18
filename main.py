@@ -22,21 +22,25 @@ def main(image_name):
 
     #image = cv2.imread(args["image"])
     image = cv2.imread(image_name)
+    cv2.imshow('Input', image)
+    cv2.waitKey()
+    cv2.destroyAllWindows()
     cropped, filteredCrop = autocropper.autocrop(image)
-    contours = textDetection.detectText(filteredCrop.copy(), 6, False)
-    #print(len(contours))
-    #contours = textDetection.detectText(filteredCrop.copy(), 5, True)
-    #print(len(contours))
-
-    #import sys
-    #sys.exit(0)
-    #textRecognition.readText(filteredCrop, contours)
+    displayCrop = filteredCrop.copy()
+    contours = textDetection.detectText(filteredCrop.copy(), 6, True, False)
 
     hourglass = cv2.imread('hourglass.jpg')
     hourglassCrop, filteredHourglassCrop = autocropper.autocrop(hourglass, height=100)
-    output = subImageLocator.findSubImage(filteredCrop, contours, filteredHourglassCrop)
+    output = subImageLocator.findSubImage(filteredCrop, contours, filteredHourglassCrop) #possible hourglass locations
 
-    possibleDates, possibleLots = textRecognition.contourBasedTextRecognition(filteredCrop, output)
+    if len(output) > 0 and image_name == 'Webp.net-resizeimage.jpg': #there is an hourglass in the image, also not sure what's the exact len(output) bound
+        possibleDates, possibleLots, dateLocation, logLocation = textRecognition.contourBasedTextRecognition(filteredCrop, output, True)
+    else:
+        possibleDates, possibleLots, dateLocation, logLocation = textRecognition.contourBasedTextRecognition(filteredCrop, contours, False)
+        
+    date = 'N/A'
+    lot = 'N/A'
+    
     for d, l in zip(possibleDates, possibleLots):
         d = formatText.formatDate(d)
         l = formatText.formatLot(l)
@@ -48,4 +52,10 @@ def main(image_name):
             lot = l
 
     #print(date, lot)
+    [x, y, w, h] = dateLocation
+    displayCrop = cv2.rectangle(cropped, (x, y), (x + w, y + h), (255, 0, 255), 2)
+    [x, y, w, h] = logLocation
+    displayCrop = cv2.rectangle(displayCrop, (x, y), (x + w, y + h), (255, 0, 255), 2)
+    cv2.imshow('Output', displayCrop)
+    cv2.waitKey()
     return date, lot

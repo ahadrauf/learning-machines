@@ -9,6 +9,7 @@ import sys
 import textDetection
 import formatText
 
+#Not fully developed, use contourBasedTextRecognition instead
 def readText(image, contours):
     for contour in contours:
         [x, y, w, h] = contour
@@ -23,31 +24,45 @@ def readText(image, contours):
     os.remove('temp_image.jpg')
     
     
-def contourBasedTextRecognition(image, contours, dilationIterations = 1):
+def contourBasedTextRecognition(image, contours, minimizeContours = False):
     dates = []
     lots = []
     for contour in contours:
-        [x, y, w, h] = contour[0]
-        temp_image = image[int(y+h/2):y+h, int(x+w/2.4):x+w]
-        #temp_image = image[y:y+h, x:x+w]
-        #if len(contours) > 1:
-        #    c = textDetection.detectText(temp_image.copy(), dilationIterations)
-        cv2.imwrite('temp_image.jpg', temp_image)
-        image_text = image_to_string(Image.open('temp_image.jpg')).strip()
-        #if len(image_text) > 0:
-        dates.append(image_text)
+        if len(contour) == 4:
+            [x, y, w, h] = contour
+        else:
+            [x, y, w, h], _ = contour
         
-        temp_image = image[y:int(y+h/2), x:x+w]
-        #temp_image = image[y:y+h, x:x+w]
-        #if len(contours) > 1:
-        #    c = textDetection.detectText(temp_image.copy(), dilationIterations)
+        if minimizeContours: #kind of hackish, it just works
+            temp_image = image[int(y+h/2):y+h, int(x+w/2.4):x+w]
+        else:
+            temp_image = image[y:y+h, x:x+w]
         cv2.imwrite('temp_image.jpg', temp_image)
         image_text = image_to_string(Image.open('temp_image.jpg')).strip()
-        #if len(image_text) > 0:
+        dates.append(image_text)
+        formattedDate = formatText.formatDate(image_text)
+        if formattedDate:
+            #cv2.rectangle(temp_image, (x, y), (x + w, y + h), (255, 255, 255), 2)
+            date_location = [x, y, w, h]
+        #cv2.imshow('temp', temp_image)
+        #cv2.waitKey()
+        #print(image_text)
+        #sys.stdout.flush()
+        
+        if minimizeContours:
+            temp_image = image[y:int(y+h/2), x:x+w]
+        else:
+            temp_image = image[y:y+h, x:x+w]
+        cv2.imwrite('temp_image.jpg', temp_image)
+        image_text = image_to_string(Image.open('temp_image.jpg')).strip()
         lots.append(image_text)
+        formattedLot = formatText.formatLot(image_text)
+        if formattedLot:
+            #cv2.rectangle(temp_image, (x, y), (x + w, y + h), (255, 255, 255), 2)
+            log_location = [x, y, w, h]
         #cv2.imshow('temp', temp_image)
         #cv2.waitKey()
         #print(image_text)
         #sys.stdout.flush()
     os.remove('temp_image.jpg')
-    return (dates, lots)
+    return (dates, lots, date_location, log_location)
